@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 const ViewDetail = (props) => {
   return (
     <>
-      <Dialog
+      <Dialog 
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"

@@ -4,8 +4,9 @@ import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import FormDialog from "./FormDialog";
 import ViewDetail from "./ViewDetail";
 
-const columns = [
+const  columns = [
   // { field: "id", headerName: "ID", width: 450 },
+ 
   { field: "title", headerName: "Title", width: 450 },
   { field: "date", headerName: "Date", width: 450 },
   { field: "time", headerName: "Time", width: 450 },

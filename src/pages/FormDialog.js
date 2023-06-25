@@ -11,53 +11,49 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { TextField } from "@mui/material";
 
-
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-  
-  function BootstrapDialogTitle(props) {
-    const { children, onClose, ...other } = props;
-  
-    return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-    );
-  }
-  
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
-  
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
+function BootstrapDialogTitle(props) {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+}
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default function CustomizedDialogs(props) {
-  const [id, setId] = useState("5");
-  const [title, setTitle] = useState("");  
-  const [department, setDepartment] = useState("");  
-  const [description, setDescription] = useState("");  
+  const [id, setId] = useState("");
+  const [title, setTitle] = useState("");
+  const [department, setDepartment] = useState("");
+  const [description, setDescription] = useState("");
   const currentDate = new Date().toLocaleDateString();
   const currentTime = new Date().toLocaleTimeString();
 
@@ -65,29 +61,30 @@ export default function CustomizedDialogs(props) {
     props.setOpen(false);
   };
 
-  const handleSaveChanges = async() => {
-    const newRow = {
-        id,
-      title,
+  const handleSaveChanges = async () => {
+    const existingRows = JSON.parse(localStorage.getItem("rows")) || [];
+    console.log(existingRows);
+    let newRow = {
+      id: existingRows.length,
+      title: title,
       date: currentDate,
       time: currentTime,
-      department,
-      description
+      department: department,
+      description: description,
     };
+    console.log(newRow);
 
-    const existingRows = JSON.parse(localStorage.getItem("rows")) || [];
     const updatedRows = [...existingRows, newRow];
     localStorage.setItem("rows", JSON.stringify(updatedRows));
-    setTitle("")
-    setDepartment("")
-    setDescription("")
+    setTitle("");
+    setDepartment("");
+    setDescription("");
     props.handleAddRow(newRow);
 
-    handleClose()
+    handleClose();
   };
 
   return (
-    
     <div>
       <BootstrapDialog
         onClose={handleClose}
@@ -101,39 +98,37 @@ export default function CustomizedDialogs(props) {
           Add New Group
         </BootstrapDialogTitle>
         <DialogContent dividers>
+          <TextField
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            label="Department"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+          />
+        </DialogContent>
 
-      <TextField
-        label="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        fullWidth
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        label="Department"
-        value={department}
-        onChange={(e) => setDepartment(e.target.value)}
-        fullWidth
-        margin="normal"
-        variant="outlined"
-      />
-      <TextField
-        label="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        fullWidth
-        margin="normal"
-        variant="outlined"
-      />
-
-</DialogContent>
-
-<DialogActions>   
-       <Button autoFocus onClick={handleSaveChanges}>
-        Save changes
-      </Button>
-      </DialogActions>
+        <DialogActions>
+          <Button autoFocus onClick={handleSaveChanges}>
+            Save changes
+          </Button>
+        </DialogActions>
       </BootstrapDialog>
     </div>
   );
